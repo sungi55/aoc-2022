@@ -1,8 +1,11 @@
 import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
+
 fun readInput(name: String) = getFile(name).readLines()
+
 private fun getFile(name: String) = File("input", "$name.txt")
+
 fun readInputText(name: String) = getFile(name).readText()
 
 /**
