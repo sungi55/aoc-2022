@@ -15,10 +15,10 @@ fun main() {
     println(part1(input))
     println(part2(input))
 }
-fun String.sumTopOfCalories(top: Int) =
+private fun String.sumTopOfCalories(top: Int) =
     split("\n\n")
         .map { it.sumCaloriesInGroup() }
         .sortedDescending()
         .take(top)
         .sum()
-fun String.sumCaloriesInGroup() = lines().sumOf { calorie -> calorie.toInt() }
+private fun String.sumCaloriesInGroup() = lines().sumOf { calorie -> calorie.toInt() }
