@@ -1,17 +1,24 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
-    }
 
-    fun part2(input: List<String>): Int {
-        return input.size
-    }
+    val day = "Day01"
 
-    // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
+    fun part1(input: String): Int = input.sumTopOfCalories(1)
 
-    val input = readInput("Day01")
+    fun part2(input: String): Int  = input.sumTopOfCalories(3)
+
+    val testInput = readInputText(name = "${day}_test")
+    val input = readInputText(name = day)
+
+    check(part1(testInput) == 24000)
+    check(part2(testInput) == 45000)
+
     println(part1(input))
     println(part2(input))
 }
+fun String.sumTopOfCalories(top: Int) =
+    split("\n\n")
+        .map { it.sumCaloriesInGroup() }
+        .sortedDescending()
+        .take(top)
+        .sum()
+fun String.sumCaloriesInGroup() = lines().sumOf { calorie -> calorie.toInt() }
