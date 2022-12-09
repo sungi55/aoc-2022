@@ -5,7 +5,7 @@ fun main() {
     fun getTreeGrid(input: List<String>): Grid =
         Grid().apply {
             input.forEachIndexed { rowIndex, row ->
-                val treesInRow = row.chunked(1) { "$it".toInt() }
+                val treesInRow = row.map { it.digitToInt() }
                 rows[rowIndex] = treesInRow
                 treesInRow.forEachIndexed { columnIndex, treeHeight ->
                     val column = columns[columnIndex] ?: mutableListOf()
@@ -34,17 +34,33 @@ fun main() {
         }
 
 
-    fun part2(lines: List<String>): Int = lines.size
+    fun part2(lines: List<String>): Int = getTreeGrid(lines).let { (rows, columns) ->
+        mutableListOf<Int>().apply {
+            rows.forEach { (rowIndex, row) ->
+                columns.forEach { (columnIndex, column) ->
+                    val rowBeforeTree = row.take(columnIndex)
+                    val rowAfterTree = row.takeLast(row.lastIndex - columnIndex)
+                    val columnBeforeTree = column.take(rowIndex)
+                    val columnAfterTree = column.takeLast(column.lastIndex - rowIndex)
+                    val currentTree = row[columnIndex]
+                    val left = rowBeforeTree.takeLastWhile { it <= currentTree }.size
+                    val right = rowAfterTree.takeWhile { it <= currentTree }.size
+                    val up = columnBeforeTree.takeLastWhile { it <= currentTree }.size
+                    val bottom = columnAfterTree.takeWhile { it <= currentTree }.size
+                    add(left * right * up * bottom)
+                }
+            }
+        }.max()
+    }
 
     val testInput = readInput(name = "${day}_test")
     val input = readInput(name = day)
 
-    println(part1(testInput))
     check(part1(testInput) == 21)
-//    check(part2(testInput) == 8)
+    check(part2(testInput) == 12)
 
     println(part1(input))
-//    println(part2(input))
+    println(part2(input))
 }
 
 data class Grid(
