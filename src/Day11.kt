@@ -48,16 +48,12 @@ fun main() {
         }.withMostBusiness()
 
 
-    fun getMonkeysMultipliedDivisibleValue(lines: List<String>) = getMonkeys(lines).values.fold(1L) { acc, monkey ->
-        acc * monkey.worryLevel.divisibleValue
+    fun part1(lines: List<String>): Long = getMonkeysBusiness(lines, 20) { it.div(3) }
+
+    fun part2(lines: List<String>): Long {
+        val decreaseWorryStrategy = getMonkeys(lines).values.map { it.worryLevel.divisibleValue }.reduce(Long::times)
+        return getMonkeysBusiness(lines, 10000) { it % decreaseWorryStrategy }
     }
-
-    fun part1(lines: List<String>): Long = getMonkeysBusiness(lines, 20) { it.floorDiv(3) }
-
-    fun part2(lines: List<String>): Long =
-        getMonkeysMultipliedDivisibleValue(lines).let { base ->
-            getMonkeysBusiness(lines, 10000) { it.mod(base) }
-        }
 
     val testInput = readInput(name = "${day}_test")
     val input = readInput(name = day)
